@@ -47,7 +47,7 @@ git push -u origin main
 **Build & Deploy:**
 - **Build Command**: 
   ```bash
-  npm install && npm run build
+  npm install && npm run build && npm run register
   ```
 - **Start Command**:
   ```bash

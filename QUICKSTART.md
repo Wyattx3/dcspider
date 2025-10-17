@@ -64,7 +64,7 @@ PREFIX=!
 # Build project
 npm run build
 
-# Register slash commands
+# Register slash commands (သို့မဟုတ် build နောက် auto-register)
 npm run register
 
 # Start bot

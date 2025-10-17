@@ -183,9 +183,10 @@ DEFAULT_247_MODE=false
 
 Quick steps:
 1. GitHub repository ကို connect လုပ်ပါ
-2. Environment variables ထည့်ပါ
-3. Deploy button နှိပ်ပါ
-4. ✅ Done! Auto-redeploy on push
+2. Build command: `npm install && npm run build && npm run register`
+3. Environment variables ထည့်ပါ
+4. Deploy button နှိပ်ပါ
+5. ✅ Done! Auto-redeploy on push
 
 **Features:**
 - ✅ Auto-deploy from GitHub

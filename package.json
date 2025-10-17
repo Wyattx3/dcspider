@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "register": "ts-node src/utils/registerCommands.ts",
+    "register": "node dist/utils/registerCommands.js",
     "watch": "tsc -w"
   },
   "keywords": [
