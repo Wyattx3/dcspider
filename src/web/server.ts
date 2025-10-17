@@ -14,15 +14,29 @@ const io = new SocketServer(server);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set view engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Set view engine (optional - can also use API only)
+if (process.env.NODE_ENV === 'production') {
+  // In production, serve a simple JSON response instead
+  app.get('/', (req: Request, res: Response) => {
+    res.json({
+      status: 'online',
+      bot: 'DC Spider Music Bot',
+      stats: getStats(),
+      message: 'Bot is running! Use /api/stats for statistics.'
+    });
+  });
+} else {
+  app.set('view engine', 'ejs');
+  app.set('views', path.join(__dirname, 'views'));
+}
 
-// Routes
-app.get('/', (req: Request, res: Response) => {
-  const stats = getStats();
-  res.render('index', { stats });
-});
+// Routes (skip if already defined above)
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/', (req: Request, res: Response) => {
+    const stats = getStats();
+    res.render('index', { stats });
+  });
+}
 
 app.get('/api/stats', (req: Request, res: Response) => {
   const stats = getStats();
