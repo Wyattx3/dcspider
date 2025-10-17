@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
 import { queueManager } from '../../services/QueueManager';
 import { musicPlayer } from '../../services/MusicPlayer';
 import { validateQueueExists } from '../../utils/validators';
@@ -9,7 +9,7 @@ export const data = new SlashCommandBuilder()
   .setName('voteskip')
   .setDescription('သီချင်းကျော်ရန် မဲပေးပါ');
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   if (!config.enableVoting) {
     await interaction.reply({
       embeds: [createErrorEmbed('အမှား', 'Voting ကို ပိတ်ထားပါသည်')],

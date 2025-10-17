@@ -1,11 +1,11 @@
-import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { config } from '../../config';
 
 export const data = new SlashCommandBuilder()
   .setName('help')
   .setDescription('Bot commands များကို ကြည့်ပါ');
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const embed = new EmbedBuilder()
     .setColor(config.colors.primary)
     .setTitle('🎵 DC Spider Music Bot - အသုံးပြုနည်း')

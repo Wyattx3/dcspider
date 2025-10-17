@@ -1,11 +1,11 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { createSuccessEmbed } from '../../utils/embedBuilder';
 
 export const data = new SlashCommandBuilder()
   .setName('ping')
   .setDescription('Bot ၏ latency ကို စစ်ဆေးပါ');
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const sent = await interaction.reply({ 
     content: 'Pinging...', 
     fetchReply: true 

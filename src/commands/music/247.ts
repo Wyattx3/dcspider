@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { queueManager } from '../../services/QueueManager';
 import { validateMusicCommand } from '../../utils/validators';
 import { createSuccessEmbed, createErrorEmbed } from '../../utils/embedBuilder';
@@ -7,7 +7,7 @@ export const data = new SlashCommandBuilder()
   .setName('247')
   .setDescription('24/7 mode ကို ဖွင့်/ပိတ် ပါ');
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const validation = await validateMusicCommand(interaction);
   
   if (!validation.success) {

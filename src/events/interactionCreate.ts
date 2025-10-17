@@ -1,4 +1,4 @@
-import { BaseInteraction, CommandInteraction } from 'discord.js';
+import { BaseInteraction, ChatInputCommandInteraction } from 'discord.js';
 import { commandHandler } from '../handlers/commandHandler';
 import { createErrorEmbed } from '../utils/embedBuilder';
 
@@ -15,7 +15,7 @@ export async function execute(interaction: BaseInteraction): Promise<void> {
   }
 
   try {
-    await command.execute(interaction as CommandInteraction);
+    await command.execute(interaction as ChatInputCommandInteraction);
   } catch (error) {
     console.error(`❌ Error executing command ${interaction.commandName}:`, error);
 

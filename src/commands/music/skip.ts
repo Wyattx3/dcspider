@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { musicPlayer } from '../../services/MusicPlayer';
 import { validateQueueExists } from '../../utils/validators';
 import { createSuccessEmbed, createErrorEmbed } from '../../utils/embedBuilder';
@@ -7,7 +7,7 @@ export const data = new SlashCommandBuilder()
   .setName('skip')
   .setDescription('နောက်သီချင်းကို ကျော်ပါ');
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const validation = await validateQueueExists(interaction);
   
   if (!validation.success) {
