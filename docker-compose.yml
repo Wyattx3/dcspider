@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  dcspider-bot:
+    build: .
+    container_name: dcspider-music-bot
+    restart: unless-stopped
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - CLIENT_ID=${CLIENT_ID}
+      - PREFIX=${PREFIX:-!}
+      - WEB_PORT=${WEB_PORT:-3000}
+      - WEB_ENABLED=${WEB_ENABLED:-true}
+      - MAX_QUEUE_SIZE=${MAX_QUEUE_SIZE:-100}
+      - DEFAULT_VOLUME=${DEFAULT_VOLUME:-50}
+      - ENABLE_FILTERS=${ENABLE_FILTERS:-true}
+      - ENABLE_LYRICS=${ENABLE_LYRICS:-true}
+      - ENABLE_VOTING=${ENABLE_VOTING:-true}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    volumes:
+      - ./logs:/app/logs
+
