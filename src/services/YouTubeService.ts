@@ -53,7 +53,7 @@ export class YouTubeService {
     input: string, 
     requestedBy: string
   ): Promise<Song[]> {
-    const urlType = validateURL(input);
+    const urlType = await validateURL(input);
 
     if (urlType === 'yt_video') {
       const song = await this.getVideo(input);

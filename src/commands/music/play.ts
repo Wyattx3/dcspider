@@ -1,5 +1,5 @@
 import { 
-  CommandInteraction, 
+  ChatInputCommandInteraction,
   GuildMember, 
   SlashCommandBuilder, 
   VoiceChannel 
@@ -21,7 +21,7 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
   );
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   await interaction.deferReply();
 
   const validation = await validateMusicCommand(interaction);

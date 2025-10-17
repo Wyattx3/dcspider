@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { queueManager } from '../../services/QueueManager';
 import { validateQueueExists } from '../../utils/validators';
 import { createErrorEmbed, createQueueEmbed } from '../../utils/embedBuilder';
@@ -13,7 +13,7 @@ export const data = new SlashCommandBuilder()
       .setMinValue(1)
   );
 
-export async function execute(interaction: CommandInteraction): Promise<void> {
+export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const validation = await validateQueueExists(interaction);
   
   if (!validation.success) {

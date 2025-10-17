@@ -4,7 +4,7 @@ import {
   AudioResource 
 } from '@discordjs/voice';
 import { 
-  CommandInteraction, 
+  ChatInputCommandInteraction,
   Message, 
   TextChannel, 
   VoiceChannel 
@@ -60,7 +60,7 @@ export interface Command {
   category: 'music' | 'utility';
   options?: CommandOption[];
   execute: (
-    interaction: CommandInteraction | Message,
+    interaction: ChatInputCommandInteraction | Message,
     args?: string[]
   ) => Promise<void>;
 }

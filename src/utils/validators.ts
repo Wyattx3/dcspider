@@ -1,5 +1,5 @@
 import { 
-  CommandInteraction, 
+  ChatInputCommandInteraction,
   GuildMember, 
   Message, 
   VoiceChannel 
@@ -14,7 +14,7 @@ export interface ValidationResult {
 }
 
 export async function validateMusicCommand(
-  interaction: CommandInteraction | Message
+  interaction: ChatInputCommandInteraction | Message
 ): Promise<ValidationResult> {
   const member = interaction.member as GuildMember;
 
@@ -42,7 +42,7 @@ export async function validateMusicCommand(
 }
 
 export async function validateQueueExists(
-  interaction: CommandInteraction | Message
+  interaction: ChatInputCommandInteraction | Message
 ): Promise<ValidationResult> {
   const validation = await validateMusicCommand(interaction);
   if (!validation.success) return validation;
@@ -61,7 +61,7 @@ export async function validateQueueExists(
 }
 
 export async function validatePlaying(
-  interaction: CommandInteraction | Message
+  interaction: ChatInputCommandInteraction | Message
 ): Promise<ValidationResult> {
   const validation = await validateQueueExists(interaction);
   if (!validation.success) return validation;
