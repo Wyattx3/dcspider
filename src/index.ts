@@ -3,12 +3,23 @@ import { config, validateConfig } from './config';
 import { commandHandler } from './handlers/commandHandler';
 import { eventHandler } from './handlers/eventHandler';
 import { startWebServer } from './web/server';
+import play from 'play-dl';
 
 async function main() {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('🎵 DC Spider Music Bot');
   console.log('🎧 Powered by SoundCloud');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
+  // Initialize SoundCloud support
+  try {
+    console.log('🔧 Initializing SoundCloud support...');
+    await play.getFreeClientID();
+    console.log('✅ SoundCloud initialized successfully\n');
+  } catch (error) {
+    console.error('⚠️  Failed to initialize SoundCloud:', error);
+    console.log('⚠️  Bot will continue but SoundCloud may not work properly\n');
+  }
 
   // Validate configuration
   if (!validateConfig()) {

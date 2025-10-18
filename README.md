@@ -38,6 +38,7 @@ Premium Discord music bot ဖြင့် **SoundCloud streaming**, audio filter
 - npm သို့မဟုတ် yarn
 - Discord Bot Token
 - FFmpeg (audio processing အတွက်)
+- **API keys မလိုပါ** - SoundCloud အလိုအလျောက် အလုပ်လုပ်ပါတယ်! 🎉
 
 ### Setup
 
@@ -229,6 +230,14 @@ docker-compose up -d
 
 **📖 [Docker Guide →](DEPLOYMENT.md#docker-deployment)**
 
+## 📚 Documentation
+
+- **[SoundCloud Setup Guide](./SOUNDCLOUD_SETUP.md)** - အလိုအလျောက် initialization (config မလိုပါ!)
+- **[Interactive Buttons Guide](./BUTTONS.md)** - Button controls နှင့် အသုံးပြုနည်း
+- **[Auto-play Guide](./AUTOPLAY.md)** - Auto-play feature အသေးစိတ်
+- **[Filter Guide](./FILTER_GUIDE.md)** - Audio filter documentation
+- **[Deployment Guides](./RENDER_DEPLOYMENT.md)** - Render, VPS, Docker deployment
+
 ## 🔧 Troubleshooting
 
 ### Bot ကို voice channel သို့ ဝင်၍မရပါ
@@ -242,6 +251,11 @@ docker-compose up -d
 ### Commands များ မမြင်ရပါ
 - Slash commands register လုပ်ပြီးပြီလား: `npm run register`
 - Bot တွင် application.commands permission ရှိမရှိ စစ်ဆေးပါ
+
+### SoundCloud "client_id" error
+- Bot ကို restart လုပ်ပါ - SoundCloud initialization အလိုအလျောက် ပြန်လုပ်ပါမည်
+- Startup logs ကြည့်ပါ: `✅ SoundCloud initialized successfully` ပေါ်ရပါမည်
+- အသေးစိတ်: [SOUNDCLOUD_SETUP.md](./SOUNDCLOUD_SETUP.md) ဖတ်ပါ
 
 ## 📝 License
 
