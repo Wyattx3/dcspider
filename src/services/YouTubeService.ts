@@ -1,53 +1,68 @@
 import play, { 
-  YouTubeVideo, 
-  YouTubePlayList,
+  SoundCloudTrack,
   validate as validateURL 
 } from 'play-dl';
 import { Song } from '../types';
 
-export class YouTubeService {
+export class MusicService {
   async search(query: string, limit: number = 1): Promise<Song[]> {
     try {
-      const results = await play.search(query, { limit, source: { youtube: 'video' } });
-      
-      return results.map((video) => this.formatSong(video));
+      const results = await play.search(query, { limit, source: { soundcloud: 'tracks' } });
+      return results.map((track) => this.formatSoundCloudSong(track as any));
     } catch (error) {
-      console.error('YouTube search error:', error);
+      console.error('SoundCloud search error:', error);
       throw new Error('ဂီတရှာဖွေမှု မအောင်မြင်ပါ');
     }
   }
 
-  async getVideo(url: string): Promise<Song> {
+  async getRelatedTracks(song: Song, limit: number = 1): Promise<Song[]> {
     try {
-      const info = await play.video_info(url);
-      
-      if (!info || !info.video_details) {
-        throw new Error('ဗီဒီယို ရှာမတွေ့ပါ');
+      // Extract artist/title for better search
+      const searchTerms = [
+        song.channel, // Artist name
+        song.title.split('-')[0].trim(), // First part of title
+        song.title.split(' ').slice(0, 3).join(' '), // First 3 words
+      ].filter(Boolean);
+
+      // Try to find similar tracks
+      for (const term of searchTerms) {
+        try {
+          const results = await play.search(term, { 
+            limit: limit + 5, // Get more to filter out the same song
+            source: { soundcloud: 'tracks' } 
+          });
+          
+          // Filter out the same song
+          const filtered = results
+            .filter((track: any) => {
+              const trackUrl = track.url || track.permalink;
+              return trackUrl !== song.url;
+            })
+            .slice(0, limit)
+            .map((track: any) => this.formatSoundCloudSong(track));
+
+          if (filtered.length > 0) {
+            return filtered;
+          }
+        } catch (err) {
+          continue;
+        }
       }
 
-      return this.formatSong(info.video_details);
+      // Fallback: search by genre or general terms
+      const fallbackSearch = await play.search('popular music', { 
+        limit, 
+        source: { soundcloud: 'tracks' } 
+      });
+      
+      return fallbackSearch.map((track: any) => this.formatSoundCloudSong(track));
     } catch (error) {
-      console.error('YouTube video info error:', error);
-      throw new Error('ဗီဒီယို အချက်အလက် ရယူ၍မရပါ');
+      console.error('Related tracks error:', error);
+      // Return empty array instead of throwing
+      return [];
     }
   }
 
-  async getPlaylist(url: string): Promise<Song[]> {
-    try {
-      const playlist = await play.playlist_info(url, { incomplete: true });
-      
-      if (!playlist) {
-        throw new Error('Playlist ရှာမတွေ့ပါ');
-      }
-
-      const videos = await playlist.all_videos();
-      
-      return videos.map((video) => this.formatSong(video));
-    } catch (error) {
-      console.error('YouTube playlist error:', error);
-      throw new Error('Playlist ရယူ၍မရပါ');
-    }
-  }
 
   async validateAndGetSongs(
     input: string, 
@@ -55,19 +70,21 @@ export class YouTubeService {
   ): Promise<Song[]> {
     const urlType = await validateURL(input);
 
-    if (urlType === 'yt_video') {
-      const song = await this.getVideo(input);
+    // SoundCloud Track
+    if (urlType === 'so_track') {
+      const song = await this.getSoundCloudTrack(input);
       song.requestedBy = requestedBy;
       return [song];
-    } 
-    
-    if (urlType === 'yt_playlist') {
-      const songs = await this.getPlaylist(input);
+    }
+
+    // SoundCloud Playlist
+    if (urlType === 'so_playlist') {
+      const songs = await this.getSoundCloudPlaylist(input);
       songs.forEach(song => song.requestedBy = requestedBy);
       return songs;
     }
 
-    // Search query
+    // Search query - SoundCloud only
     const songs = await this.search(input, 1);
     if (songs.length === 0) {
       throw new Error('ရလဒ် မတွေ့ပါ');
@@ -77,14 +94,45 @@ export class YouTubeService {
     return songs;
   }
 
-  private formatSong(video: YouTubeVideo): Song {
+  async getSoundCloudTrack(url: string): Promise<Song> {
+    try {
+      const track = await play.soundcloud(url);
+      
+      if (!track) {
+        throw new Error('Track ရှာမတွေ့ပါ');
+      }
+
+      return this.formatSoundCloudSong(track);
+    } catch (error) {
+      console.error('SoundCloud track error:', error);
+      throw new Error('SoundCloud track ရယူ၍မရပါ');
+    }
+  }
+
+  async getSoundCloudPlaylist(url: string): Promise<Song[]> {
+    try {
+      const playlist = await play.soundcloud(url);
+      
+      if (!playlist || playlist.type !== 'playlist') {
+        throw new Error('Playlist ရှာမတွေ့ပါ');
+      }
+
+      const tracks = await (playlist as any).all_tracks();
+      return tracks.map((track: any) => this.formatSoundCloudSong(track));
+    } catch (error) {
+      console.error('SoundCloud playlist error:', error);
+      throw new Error('SoundCloud playlist ရယူ၍မရပါ');
+    }
+  }
+
+  private formatSoundCloudSong(track: any): Song {
     return {
-      title: video.title || 'Unknown',
-      url: video.url,
-      duration: video.durationInSec,
-      thumbnail: video.thumbnails[0]?.url || '',
+      title: track.name || track.title || 'Unknown',
+      url: track.url,
+      duration: track.durationInSec || Math.floor(track.durationInMs / 1000) || 0,
+      thumbnail: track.thumbnail || '',
       requestedBy: '',
-      channel: video.channel?.name || 'Unknown',
+      channel: track.user?.name || track.publisher?.name || 'SoundCloud',
     };
   }
 
@@ -101,5 +149,6 @@ export class YouTubeService {
   }
 }
 
-export const youtubeService = new YouTubeService();
+export const youtubeService = new MusicService();
+export const musicService = youtubeService; // Alias
 

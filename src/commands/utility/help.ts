@@ -35,7 +35,9 @@ export async function execute(interaction: ChatInputCommandInteraction): Promise
       {
         name: '🎛️ Advanced Features',
         value:
+          '`/dashboard` - 🎮 Interactive control panel (Buttons!)\n' +
           '`/filter <type>` - Audio filters (bassboost, nightcore, etc)\n' +
+          '`/autoplay` - Auto-play mode (related သီချင်းများ ဆက်ဖွင့်မည်)\n' +
           '`/247` - 24/7 mode toggle\n' +
           '`/voteskip` - Vote to skip song',
         inline: false,

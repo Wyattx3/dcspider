@@ -7,6 +7,7 @@ import { startWebServer } from './web/server';
 async function main() {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('🎵 DC Spider Music Bot');
+  console.log('🎧 Powered by SoundCloud');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
   // Validate configuration

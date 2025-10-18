@@ -11,6 +11,8 @@ export * as loop from './loop';
 export * as shuffle from './shuffle';
 export * as remove from './remove';
 export * as filter from './filter';
+export * as autoplay from './autoplay';
+export * as dashboard from './dashboard';
 export * as mode247 from './247';
 export * as voteskip from './voteskip';
 

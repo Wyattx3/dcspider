@@ -36,6 +36,8 @@ export interface MusicQueue {
   mode247: boolean;
   skipVotes: Set<string>;
   skipVotesNeeded: number;
+  autoplay: boolean;
+  lastPlayedSong: Song | null;
 }
 
 export enum LoopMode {

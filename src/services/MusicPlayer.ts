@@ -88,7 +88,9 @@ export class MusicPlayer {
     const song = queue.songs[0];
 
     try {
-      const stream = await play.stream(song.url);
+      const stream = await play.stream(song.url, {
+        quality: 2, // High quality
+      });
       
       const filters: string[] = [];
       
@@ -124,9 +126,20 @@ export class MusicPlayer {
       queue.resource = resource;
       queue.player!.play(resource);
       queue.isPlaying = true;
-    } catch (error) {
-      console.error('Play error:', error);
-      queueManager.skipSong(guildId);
+    } catch (error: any) {
+      console.error('Play error:', error?.message || error);
+      
+      // Remove failed song and try next
+      const failedSong = queueManager.skipSong(guildId);
+      
+      // Notify if it was a YouTube auth issue
+      if (error?.message?.includes('Sign in') || error?.message?.includes('bot')) {
+        console.warn('⚠️  YouTube authentication issue - video skipped');
+        console.warn('   Some videos may require YouTube cookies');
+        console.warn('   See YOUTUBE_SETUP.md for details');
+      }
+      
+      // Try next song
       await this.playSong(guildId);
     }
   }
@@ -135,12 +148,47 @@ export class MusicPlayer {
     const queue = queueManager.getQueue(guildId);
     if (!queue) return;
 
+    // Save last played song for autoplay
+    if (queue.songs[0]) {
+      queueManager.setLastPlayedSong(guildId, queue.songs[0]);
+    }
+
     if (queue.loopMode === LoopMode.SONG && queue.songs[0]) {
       // Replay current song
       await this.playSong(guildId);
     } else {
       queueManager.skipSong(guildId);
+      
+      // Check if queue is empty and autoplay is enabled
+      if (queue.songs.length === 0 && queue.autoplay && queue.lastPlayedSong) {
+        await this.addAutoplaySong(guildId);
+      }
+      
       await this.playSong(guildId);
+    }
+  }
+
+  private async addAutoplaySong(guildId: string): Promise<void> {
+    const queue = queueManager.getQueue(guildId);
+    if (!queue || !queue.lastPlayedSong) return;
+
+    try {
+      console.log('🎵 Auto-play: Finding related tracks...');
+      
+      const { youtubeService } = await import('./YouTubeService');
+      const relatedSongs = await youtubeService.getRelatedTracks(queue.lastPlayedSong, 1);
+      
+      if (relatedSongs.length > 0) {
+        const song = relatedSongs[0];
+        song.requestedBy = 'Auto-play 🎵';
+        
+        const added = queueManager.addSong(guildId, song);
+        if (added) {
+          console.log(`✅ Auto-play added: ${song.title}`);
+        }
+      }
+    } catch (error) {
+      console.error('Auto-play error:', error);
     }
   }
 

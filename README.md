@@ -1,12 +1,13 @@
 # 🎵 DC Spider Music Bot
 
-Premium Discord music bot ဖြင့် YouTube streaming, audio filters, 24/7 playback နှင့် web dashboard တို့ပါဝင်သည်။
+Premium Discord music bot ဖြင့် **SoundCloud streaming**, audio filters, 24/7 playback နှင့် web dashboard တို့ပါဝင်သည်။
 
 ## ✨ Features
 
 ### 🎵 Core Music Features
-- **YouTube Streaming** - High quality audio streaming
-- **Playlist Support** - Play entire YouTube playlists
+- **SoundCloud Streaming** - High quality, no authentication required 🎧
+- **Zero Setup** - No API keys or cookies needed
+- **Playlist Support** - Play entire SoundCloud playlists
 - **Queue Management** - Unlimited queue with full control
 - **Loop Modes** - Loop off/song/queue
 - **Volume Control** - 0-100% adjustable volume
@@ -14,6 +15,8 @@ Premium Discord music bot ဖြင့် YouTube streaming, audio filters, 24/7
 - **Skip/Remove** - Full queue control
 
 ### 🎛️ Advanced Features
+- **🎮 Interactive Buttons** - Complete dashboard with clickable buttons for all controls
+- **Auto-play** - Queue ကုန်သွားရင် related သီချင်းများ အလိုအလျောက် ဆက်ဖွင့်မည် 🎵
 - **Audio Filters** - Bassboost, Nightcore, Vaporwave, 8D, Karaoke
 - **Vote Skip System** - Democratic song skipping
 - **24/7 Mode** - Keep bot in voice channel
@@ -88,7 +91,7 @@ npm run dev
 
 | Command | Description | Usage |
 |---------|-------------|-------|
-| `/play <song>` | သီချင်း ဖွင့်ပါ | `/play Never Gonna Give You Up` |
+| `/play <song>` | သီချင်း ဖွင့်ပါ (SoundCloud) | `/play despacito` |
 | `/pause` | ခဏရပ်ပါ | `/pause` |
 | `/resume` | ပြန်ဖွင့်ပါ | `/resume` |
 | `/skip` | နောက်သီချင်း ကျော်ပါ | `/skip` |
@@ -100,6 +103,8 @@ npm run dev
 | `/shuffle` | Queue ကို ရောထွေးပါ | `/shuffle` |
 | `/remove <position>` | သီချင်းဖယ်ပါ | `/remove 3` |
 | `/filter <type>` | Audio filter ထည့်ပါ | `/filter bassboost` |
+| `/autoplay` | Auto-play toggle | `/autoplay` |
+| `/dashboard` | 🎮 **Interactive control panel** | `/dashboard` |
 | `/247` | 24/7 mode toggle | `/247` |
 | `/voteskip` | Skip vote | `/voteskip` |
 

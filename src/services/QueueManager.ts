@@ -28,6 +28,8 @@ export class QueueManager {
       mode247: config.default247Mode,
       skipVotes: new Set(),
       skipVotesNeeded: 0,
+      autoplay: false,
+      lastPlayedSong: null,
     };
 
     this.queues.set(guildId, queue);
@@ -182,6 +184,21 @@ export class QueueManager {
     const queue = this.queues.get(guildId);
     if (queue) {
       queue.player = player;
+    }
+  }
+
+  public toggleAutoplay(guildId: string): boolean {
+    const queue = this.queues.get(guildId);
+    if (!queue) return false;
+
+    queue.autoplay = !queue.autoplay;
+    return queue.autoplay;
+  }
+
+  public setLastPlayedSong(guildId: string, song: Song): void {
+    const queue = this.queues.get(guildId);
+    if (queue) {
+      queue.lastPlayedSong = song;
     }
   }
 
